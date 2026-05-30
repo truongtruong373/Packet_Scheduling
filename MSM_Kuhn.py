@@ -7,7 +7,7 @@ N = 16
 SIM_TIME = 50000
 WARMUP = 5000
 
-loads = np.arange(0.5, 0.99, 0.02)
+loads = np.arange(0.10, 0.99, 0.01)
 
 class Packet:
     def __init__(self, arrival_time, dest):
@@ -92,7 +92,7 @@ for load in loads:
     else:
         avg_delay = 0
 
-    avg_delays.append(avg_delay)
+    avg_delays.append(round(avg_delay, 4))
 
     print(f"Average Delay = {avg_delay:.3f}")
 

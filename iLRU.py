@@ -8,7 +8,7 @@ SIM_TIME = 50000
 WARMUP = 5000
 ITERATIONS = 1
 
-loads = np.arange(0.10, 0.99, 0.10)
+loads = np.arange(0.10, 0.99, 0.01)
 
 class Packet:
     def __init__(self, arrival_time, dest):
@@ -36,7 +36,7 @@ def ilru_scheduler(voq, last_input_served, last_output_served, current_time, ite
         # GRANT
         grants = {}
         for o in range(N):
-            for o in matched_outputs:
+            if o in matched_outputs:
                 continue
             if len(requests[o]) == 0:
                 continue
@@ -77,7 +77,7 @@ def ilru_scheduler(voq, last_input_served, last_output_served, current_time, ite
             matched_outputs.add(selected_output)
 
             last_input_served[i] = current_time
-            last_output_served[i] = current_time
+            last_output_served[selected_output] = current_time
 
     return matching
 
@@ -118,7 +118,7 @@ for load in loads:
     else:
         avg_delay = 0
 
-    avg_delays.append(avg_delay)
+    avg_delays.append(round(avg_delay, 4))
 
     print(f"Average Delay = {avg_delay:.3f}")
 
