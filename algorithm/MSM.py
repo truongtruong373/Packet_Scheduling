@@ -15,41 +15,26 @@ class Packet:
         self.dest = dest
 
 def msm_scheduler(voq):
-    graph = [[] for _ in range(N)]
+    edges = []
     for i in range(N):
         for o in range(N):
             if len(voq[i][o]) > 0:
-                graph[i].append(o)
+                edges.append((i, o))
 
-    match_output = [-1] * N
-
-    def dfs(input_port, visited):
-        for output_port in graph[input_port]:
-            if visited[output_port]:
-                continue
-
-            visited[output_port] = True
-
-            if match_output[output_port] == -1:
-                match_output[output_port] = input_port
-                return True
-
-            previous_input = match_output[output_port]
-
-            if dfs(previous_input, visited):
-                match_output[output_port] = input_port
-                return True
-
-        return False
-
-    for input_port in range(N):
-        visited = [False] * N
-        dfs(input_port,visited)
-
+    random.shuffle(edges)
     matching = []
-    for output_port in range(N):
-        if match_output[output_port] != -1:
-            matching.append((match_output[output_port],output_port))
+    matched_inputs = set()
+    matched_outputs = set()
+
+    for i, o in edges:
+        if i in matched_inputs:
+            continue
+        if o in matched_outputs:
+            continue
+
+        matching.append((i, o))
+        matched_inputs.add(i)
+        matched_outputs.add(o)
 
     return matching
 
